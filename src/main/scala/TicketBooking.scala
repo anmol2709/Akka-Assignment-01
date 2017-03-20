@@ -1,5 +1,6 @@
 import akka.actor.{Actor, ActorSystem, Props}
 import akka.util.Timeout
+import org.apache.log4j.Logger
 
 import scala.concurrent.duration._
 
@@ -10,28 +11,27 @@ import scala.concurrent.duration._
 
 class Person extends Actor {
   override def receive: Receive = {
-    case num: Any => {
-    }
+    case num: Any => print("Person")
   }
 }
 
 class BookingReception extends Actor {
-  var remainingSeats = 6;
-
+  var remainingSeats = 6
+  val log = Logger.getLogger(this.getClass)
   override def receive: Receive = {
     case num: Int =>
-      println(s"* REQUEST FROM : ${sender().path.name.toUpperCase}")
+      log.info(s"* REQUEST FROM : ${sender().path.name.toUpperCase}")
       implicit val timeout = Timeout(10 seconds)
       if (num <= remainingSeats) {
-        println(s"-- Seats Available :  $remainingSeats")
+        log.info(s"-- Seats Available :  $remainingSeats")
         remainingSeats -= num
-        println(s"-- Seats Booked: $num ")
-        println(s"-- Seats Available Now :  $remainingSeats \n")
+        log.info(s"-- Seats Booked: $num ")
+        log.info(s"-- Seats Available Now :  $remainingSeats \n")
       }
       else {
-        println(s"-- Seats Available :  $remainingSeats")
-        println(s"-- $num Seats Not Available!! ")
-        println(s"-- Seats Available Now :  $remainingSeats \n")
+        log.info(s"-- Seats Available :  $remainingSeats")
+        log.info(s"-- Sorry !! $num Seats Are Not Available!!  ")
+        log.info(s"-- Seats Available Now :  $remainingSeats \n")
       }
   }
 }
@@ -42,7 +42,7 @@ class BookingQueue extends Actor {
   override def receive: Receive = {
     case request: Int =>
       val bookingReception = context.actorSelection("../Reception")
-      bookingReception forward (request)
+      bookingReception forward request
   }
 }
 

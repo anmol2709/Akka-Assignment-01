@@ -2,6 +2,7 @@ import akka.actor.{Actor, ActorSystem, Props}
 import akka.pattern.ask
 import akka.routing.RoundRobinPool
 import akka.util.Timeout
+import org.apache.log4j.Logger
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
@@ -19,7 +20,7 @@ class ChildFileHandlingActor extends Actor {
 }
 
 class FileHandlingActor extends Actor {
-
+  val log = Logger.getLogger(this.getClass)
   implicit val timeout = Timeout(1000 seconds)
 
   val system = ActorSystem("RouterSystem")
@@ -44,20 +45,23 @@ class FileHandlingActor extends Actor {
         sender() ! countOfWords
       }
       catch{
-        case exp: Exception => println("No such file exists")
+        case exp: Exception => log.error("No such file exists")
       }
   }
 }
 
 object FileHandling extends App {
+
   implicit val timeout = Timeout(1000 seconds)
+  val log = Logger.getLogger(this.getClass)
 
   val system = ActorSystem("RouterSystem")
   val router = system.actorOf(Props[FileHandlingActor])
 
-   // Taking a demo file from rsources
+   // Taking a demo file from resources
   val fileName = "./src/main/resources/DemoFile.txt"
     val res = router ? fileName
-  res map (x=>print("Number of Words In File Are : " + x))
+  res map {x=>log.info("Number of Words In File Are : " + x)
 
+  }
 }
