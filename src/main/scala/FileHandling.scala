@@ -53,6 +53,7 @@ var ref: Option[ActorRef]=None
           ref.map(x=> x ! countOfWords)
         }
       }
+
     }
 
 }

@@ -33,26 +33,18 @@ with BeforeAndAfterAll with MustMatchers {
 
 
 
-  "A Parent File Handler" must{
+  "A Parent File Handler" must {
 
 
-    "respond with total number of words in the file to the calling actor" in{
-      val ref=system.actorOf(Props[FileHandlingActor])
+    "respond with total number of words in the file to the calling actor" in {
+      val ref = system.actorOf(Props[FileHandlingActor])
       implicit val timeout = Timeout(1000 seconds)
-     val result= ref ask ("./src/main/resources/DemoFile.txt")
-      Await.result(result,5 seconds) must be (11)
+      val result = ref ask ("./src/main/resources/DemoFile.txt")
+      Await.result(result, 5 seconds) must be(11)
 
 
     }
-    "respond with error message in the file to the calling actor if type not string" in{
-      val ref=system.actorOf(Props[FileHandlingActor])
-      implicit val timeout = Timeout(1000 seconds)
-      val result= ref ask (60)
-      Await.result(result,5 seconds) must be ("Not a File Name")
-
-
-    }
-    }
+  }
 
 
 }
