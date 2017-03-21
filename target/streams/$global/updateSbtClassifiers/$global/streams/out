@@ -703,9 +703,9 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-agent;0.13.8!test-agent.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-interface;1.0!test-interface.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8!apply-macro.jar
-[debug] :: resolution report :: resolve 1436ms :: artifacts dl 53ms
+[debug] :: resolution report :: resolve 12068ms :: artifacts dl 435ms
 [debug] 	report for default#akka-assignment-01$sbt_2.11;1.0 default produced in /home/knoldus/Akka-Assignment-01/target/resolution-cache/reports/default-akka-assignment-01$sbt_2.11-default.xml
-[debug] 	resolve done (1436ms resolve - 53ms download)
+[debug] 	resolve done (12068ms resolve - 435ms download)
 [debug] Using inline dependencies specified in Scala.
 [debug] :: resolving dependencies :: default#akka-assignment-01$sources_2.11;1.0
 [debug] 	confs: [default]
@@ -1069,6 +1069,6 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_8_2;0.13.8!precompiled-2_8_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_2;0.13.8!precompiled-2_9_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_3;0.13.8!precompiled-2_9_3.jar(src)
-[debug] :: resolution report :: resolve 276ms :: artifacts dl 39ms
+[debug] :: resolution report :: resolve 1314ms :: artifacts dl 231ms
 [debug] 	report for default#akka-assignment-01$sources_2.11;1.0 default produced in /home/knoldus/Akka-Assignment-01/target/resolution-cache/reports/default-akka-assignment-01$sources_2.11-default.xml
-[debug] 	resolve done (276ms resolve - 39ms download)
+[debug] 	resolve done (1314ms resolve - 231ms download)

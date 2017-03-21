@@ -1,4 +1,5 @@
-import akka.actor.{Actor, ActorSystem, Props}
+package com.knoldus
+import akka.actor.{ActorRef, Actor, ActorSystem, Props}
 import akka.pattern.ask
 import akka.routing.RoundRobinPool
 import akka.util.Timeout
@@ -11,11 +12,11 @@ import scala.io.Source
 
 class ChildFileHandlingActor extends Actor {
 
-
   override def receive: Receive = {
     case msg: String =>
       val sizeOfLine = msg.split("[ ,!.]+").size
       sender() ! sizeOfLine
+
   }
 }
 
@@ -24,30 +25,36 @@ class FileHandlingActor extends Actor {
   implicit val timeout = Timeout(1000 seconds)
 
   val system = ActorSystem("RouterSystem")
-  val childRouter = context.actorOf(RoundRobinPool(5).props(Props[ChildFileHandlingActor]), name = "childPoolRouter")
-
+    val childRouter = context.actorOf(RoundRobinPool(5).props(Props[ChildFileHandlingActor]), name = "childPoolRouter")
   val system2 = ActorSystem("RouterSystem")
   val router = system2.actorOf(Props[FileHandlingActor])
   var countOfWords = 0
-
+  var totalLines = 0
+  var linesProcessed = 0
+var ref: Option[ActorRef]=None
   override def receive: Receive = {
-    case msg: String =>
-      try {
-        val fileData = Source.fromFile(msg).getLines().toList
-        val lines = (for {
-          i <- 0 to fileData.size - 1
-        } yield childRouter ? (fileData(i).toString)).toList
-        val listOfLineSize = Await.result(Future.sequence(lines), 10 seconds)
 
-        listOfLineSize.map {
-          case x: Int => countOfWords = countOfWords + x
+      case msg: String => {
+
+
+  ref=Some(sender())
+        Source.fromFile(msg).getLines.foreach{lines=>
+          childRouter ! lines
+          totalLines+=1
         }
-        sender() ! countOfWords
+
       }
-      catch{
-        case exp: Exception => log.error("No such file exists")
+      case msg: Int => {
+        linesProcessed += 1
+        countOfWords += msg
+        if (totalLines == linesProcessed)
+
+        {
+          ref.map(x=> x ! countOfWords)
+        }
       }
-  }
+    }
+
 }
 
 object FileHandling extends App {
@@ -65,3 +72,4 @@ object FileHandling extends App {
 
   }
 }
+

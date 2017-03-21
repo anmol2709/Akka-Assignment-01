@@ -11,6 +11,7 @@ val akkaVersion = "2.4.17"
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
-  "log4j" % "log4j" % "1.2.17"
+  "log4j" % "log4j" % "1.2.17",
+  "org.scalatest" %% "scalatest" % "3.0.1"
 
 )

@@ -1,3 +1,6 @@
+package com.knoldus
+
+
 import akka.actor.{Actor, ActorSystem, Props}
 import akka.util.Timeout
 import org.apache.log4j.Logger
@@ -10,6 +13,8 @@ import scala.concurrent.duration._
   */
 
 class Person extends Actor {
+
+
   override def receive: Receive = {
     case num: Any => print("Person")
   }
@@ -41,7 +46,7 @@ class BookingQueue extends Actor {
 
   override def receive: Receive = {
     case request: Int =>
-      val bookingReception = context.actorSelection("../Reception")
+        val bookingReception = context.actorSelection("../Reception")
       bookingReception forward request
   }
 }
